@@ -17,16 +17,19 @@ const PaymentForm = () => {
     const paymentData = {
       ...data,
       tran_id: tran_id,
-      success_url: 'http://localhost:8000/success', // Replace with your success URL
-      fail_url: 'http://localhost:8000/fail', // Replace with your fail URL
-      cancel_url: 'http://localhost:8000/cancel', // Replace with your cancel URL
-      ipn_url: 'http://localhost:8000/ipn', // Replace with your IPN URL
+      success_url: 'http://localhost:8000/payments/success/',
+      fail_url: 'http://localhost:8000/payments/fail/',
+      cancel_url: 'http://localhost:8000/payments/cancel/',
+      ipn_url: 'http://localhost:8000/payments/ipn/',
     };
-
     try {
-      const response = await axios.post('http://localhost:8000/initiate-payment', paymentData);
-      if (response.data.GatewayPageURL) {
-        window.location.href = response.data.GatewayPageURL;
+      const response = await axios.post('http://localhost:8000/payments/initiate/', paymentData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.data.payment_url) {
+        window.location.href = response.data.payment_url;
       } else {
         console.error('Payment initiation failed:', response.data);
       }
@@ -90,7 +93,7 @@ const PaymentForm = () => {
             <input
               type="text"
               placeholder="Customer Address"
-              {...register('cus_add1', { required: 'Customer Address is required' })}
+              {...register('cus_address', { required: 'Customer Address is required' })}
               className="form-control"
             />
             {errors.cus_add1 && <p className="text-danger">{errors.cus_add1.message}</p>}
@@ -108,7 +111,7 @@ const PaymentForm = () => {
             <input
               type="text"
               placeholder="City"
-              {...register('city', { required: 'City is required' })}
+              {...register('cus_city', { required: 'City is required' })}
               className="form-control"
             />
             {errors.city && <p className="text-danger">{errors.city.message}</p>}
@@ -117,7 +120,7 @@ const PaymentForm = () => {
             <input
               type="text"
               placeholder="Country"
-              {...register('country', { required: 'Country is required' })}
+              {...register('cus_country', { required: 'Country is required' })}
               className="form-control"
             />
             {errors.country && <p className="text-danger">{errors.country.message}</p>}
