@@ -18,7 +18,8 @@ const PaymentForm = () => {
       ...data,
       tran_id: tran_id,
       success_url: 'http://localhost:8000/success', // Replace with your success URL
-      fail_url: 'http://localhost:8000/fail', // Replace with your fail URL
+      fail_url: 'http://localhost:8000/fail', // Repl
+      ace with your fail URL
       cancel_url: 'http://localhost:8000/cancel', // Replace with your cancel URL
       ipn_url: 'http://localhost:8000/ipn', // Replace with your IPN URL
     };
