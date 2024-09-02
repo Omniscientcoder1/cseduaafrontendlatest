@@ -41,7 +41,7 @@ const PaymentForm = () => {
   return (
     <div className="d-flex flex-column align-items-center justify-content-center min-vh-100 bg-light">
       <div className="card p-4 shadow w-100 max-w-md">
-        <h2 className="card-title text-center mb-4">SSLCOMMERZ Payment Integration</h2>
+        <h2 className="card-title text-center mb-4">SSLCOMMERZ Payment form</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="w-100">
           <div className="mb-3">
             <input

@@ -21,7 +21,7 @@ const Payments = () => {
   const navigate = useNavigate();
 
   const handlePayment = () => {
-    navigate('/payment-form'); // Corrected the path to match the Router.js configuration
+    navigate('/payment-form');
   };
 
   return (

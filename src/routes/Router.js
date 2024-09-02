@@ -22,8 +22,12 @@ import UnAuthGuard from 'src/components/container/UnAuthGuard';
 import ForgotPassword from 'src/views/authentication/ForgotPassword';
 import ResetPassword from 'src/views/authentication/ResetPassword';
 import Payments from 'src/views/user/payments/Payments';
+import PaymentsSuccess from 'src/views/user/payments/Payment-Success';
+import PaymentFailed from 'src/views/user/payments/Payment-Failed';
+import PaymentCancelled from 'src/views/user/payments/Payment-Cancelled';
 import TabAccount from 'src/components/account-settings/TabAccount';
 import PaymentForm from 'src/views/user/payments/PaymentForm';
+import { element, exact } from 'prop-types';
 
 /* ***Layouts**** */
 const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
@@ -126,6 +130,33 @@ const Router = [
         element: (
           <AuthVerifiedGuard>
             <Payments />
+          </AuthVerifiedGuard>
+        ),
+      },
+      {
+        path:'/payments/success',
+        exact:true,
+        element: (
+          <AuthVerifiedGuard>
+            <PaymentsSuccess />
+          </AuthVerifiedGuard>
+        ),
+      },
+      {
+        path:'/payments/failed',
+        exact:true,
+        element: (
+          <AuthVerifiedGuard>
+            <PaymentFailed />
+          </AuthVerifiedGuard>
+        ),
+      },
+      {
+        path:'/payments/cancel',
+        exact:true,
+        element: (
+          <AuthVerifiedGuard>
+            <PaymentCancelled />
           </AuthVerifiedGuard>
         ),
       },
