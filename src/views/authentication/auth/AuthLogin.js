@@ -10,6 +10,7 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
 
   const handleSubmit = async (data) => {
     try {
+      
       const res = await loginToAccount(data);
       console.log(res);
       toast.success(`You are successfully logged in.`);

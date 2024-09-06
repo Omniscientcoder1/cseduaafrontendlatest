@@ -26,7 +26,7 @@ const Payments = () => {
 
   return (
     <div>
-      {/* <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom>
         Past Transactions
       </Typography>
       <Table>
@@ -46,7 +46,7 @@ const Payments = () => {
             </TableRow>
           ))}
         </TableBody>
-      </Table> */}
+      </Table>
       <Button
         variant="contained"
         color="primary"

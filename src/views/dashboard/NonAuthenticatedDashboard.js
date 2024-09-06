@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Typography, Button, TextField, Divider } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useNavigate, Link } from 'react-router-dom'; // Use useNavigate instead of useHistory
@@ -7,9 +7,17 @@ import { getCommittee } from 'src/services/query/committee';
 import CommitteeSlider from 'src/components/shared/CommitteeSlider';
 import CustomCard from 'src/views/dashboard/components/CustomCard';
 import cards from 'src/views/dashboard/components/Cards'; // Importing the cards array
+import { signInWithPopup } from 'firebase/auth';
+import { auth, provider } from 'src/views/authentication/auth/firebaseConfig';
 // Import images
 import backgroundQuote1 from 'src/assets/images/background_quote1.png';
 import backgroundQuote2 from 'src/assets/images/background_quote2.png';
+import { STORAGE_KEY_ACCESS_TOKEN, STORAGE_KEY_REFRESH_TOKEN } from 'src/constants/localstorage';
+import { LocalStorage } from 'src/services/storage/localstorage';
+import { AuthContext } from 'src/context/AuthContext';
+import { toast } from 'react-toastify';
+import { privateAxios } from 'src/services/request/axiosConfig';
+import { setTokenInHeader } from 'src/services/request/axiosHelper';
 
 const useStyles = makeStyles((theme) => ({
   // Hero section and button styles...
@@ -225,13 +233,186 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: 'underline',
     },
   },
+  googleButton: {
+    backgroundColor: '#db4437',
+    color: '#fff',
+    padding: '10px 20px',
+    marginTop: '10px',
+    marginBottom: '15px',
+    '&:hover': {
+      backgroundColor: '#c23321',
+    },
+  },
 }));
 
-const NonAuthenticatedDashboard = () => {
-  const classes = useStyles();
-  const navigate = useNavigate(); // Initialize navigate
+// const NonAuthenticatedDashboard = () => {
+//   const classes = useStyles();
+//   const navigate = useNavigate();
 
+// const handleGoogleSignIn = () => {
+//   signInWithPopup(auth, provider)
+//     .then((result) => {
+//       const user = result.user;
+//       localStorage.setItem('email', user.email); // Save user email
+//       navigate('/dashboard'); // Redirect to dashboard after sign-in
+//     })
+//     .catch((error) => {
+//       console.error('Error during Google Sign-In:', error);
+//     });
+// };
+
+// const [committee, setCommittee] = useState([]);
+
+// const fetchCommittee = async () => {
+//   try {
+//     const res = await getCommittee();
+//     setCommittee(res);
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
+
+// useEffect(() => {
+//   fetchCommittee();
+// }, []);
+
+// const handleCardClick = () => {
+//   navigate('/auth/login'); // Redirect to login page on card click
+// };
+const NonAuthenticatedDashboard = () => {
+  const { loginToAccount } = useContext(AuthContext);
+  const classes = useStyles();
+  const navigate = useNavigate();
   const [committee, setCommittee] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // Google Sign-In function with token verification
+  const handleGoogleSignIn = () => {
+    setLoading(true);
+
+    const handleSubmit = async (data) => {
+      try {
+        const res = await loginToAccount(data);
+        console.log(res);
+        toast.success(`You are successfully logged in.`);
+      } catch (error) {
+        const statusCode = error.response?.status;
+
+        // Handle different toasts based on the status code
+        if (statusCode === 401) {
+          toast.error('Invalid Login Credentials.'); // Toast for 401 Unauthorized
+        } else if (statusCode === 403) {
+          toast.warning('Your account is pending approval.'); // Toast for 403 Forbidden
+        } else {
+          toast.error(`An error occurred.`); // Generic error toast
+        }
+
+        console.log(error);
+      } finally {
+      }
+    };
+
+    // signInWithPopup(auth, provider)
+    //   .then((result) => {
+    //     const user = result.user;
+    //     user.getIdToken().then((idToken) => {
+    //       // Send the token to your Django backend for verification
+    //       fetch('http://localhost:8000/accounts/google-signin/', {
+    //         method: 'POST',
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({ idToken }),
+    //       })
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //           if (data.error) {
+    //             console.error('Error:', data.error);
+    //           } else {
+    //             console.log('Sign-in successful:', data);
+    //             localStorage.setItem('accessToken', data.token);
+    //             localStorage.setItem('refreshToken', data.token); // If you have a refresh token
+    //             const access_token = localStorage.getItem('accessToken');
+    //             const refresh_token = localStorage.getItem('refreshToken');
+    //             if (access_token) {
+    //               navigate('/dashboard');
+    //             } else {
+    //               navigate('/home');
+    //             }
+    //             // Change the route to your dashboard
+    //           }
+    //         })
+    //         .catch((error) => {
+    //           console.error('Error during Google Sign-In:', error);
+    //         })
+    //         .finally(() => {
+    //           setLoading(false); // Stop loading once the process is complete
+    //         });
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error during Google Sign-In:', error);
+    //     setLoading(false); // Stop loading if there is an error
+    //   });
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        user.getIdToken().then((idToken) => {
+          // Send the token to your Django backend for verification
+          fetch('http://localhost:8000/accounts/google-signin/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ idToken }),
+          })
+            .then(async (response) => {
+              const data = await response.json();
+
+              // if (response.ok) {
+              //   const username = data.user.username;
+              //   const password = data.user.password;
+              //   console.log(username, password);
+              //   // Prepare the data to pass to handleSubmit
+              //   const loginData = {
+              //     username,
+              //     password,
+              //   };
+
+              // Call handleSubmit with the username and password
+              // await handleSubmit(loginData);
+
+              // Store the token in localStorage
+              localStorage.setItem('accessToken', data.token);
+              localStorage.setItem('refreshToken', data.token);
+              setTokenInHeader(privateAxios.defaults);
+
+              const access_token = localStorage.getItem('accessToken');
+              if (access_token) {
+                navigate('/dashboard');
+              } else {
+                navigate('/home');
+              }
+              // } else {
+              //   console.error('Error:', data);
+              //   toast.error('Sign-in failed.');
+              // }
+            })
+            .catch((error) => {
+              console.error('Error during Google Sign-In:', error);
+              toast.error('An error occurred during sign-in.');
+            })
+            .finally(() => {
+              setLoading(false); // Stop loading once the process is complete
+            });
+        });
+      })
+      .catch((error) => {
+        console.error('Error during Google Sign-In:', error);
+        toast.error('Failed to sign in with Google.');
+        setLoading(false); // Stop loading if there is an error
+      });
+  };
 
   const fetchCommittee = async () => {
     try {
@@ -245,11 +426,9 @@ const NonAuthenticatedDashboard = () => {
   useEffect(() => {
     fetchCommittee();
   }, []);
-
   const handleCardClick = () => {
     navigate('/auth/login'); // Redirect to login page on card click
   };
-
   return (
     <div>
       {/* Background Images */}
@@ -292,6 +471,9 @@ const NonAuthenticatedDashboard = () => {
             href="/auth/login" // Use href to link to /auth/login
           >
             Login as Member
+          </Button>
+          <Button variant="contained" className={classes.googleButton} onClick={handleGoogleSignIn}>
+            Sign in with Google
           </Button>
 
           <div className={classes.dividerText}>or</div>
