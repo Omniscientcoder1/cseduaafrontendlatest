@@ -472,9 +472,9 @@ const NonAuthenticatedDashboard = () => {
           >
             Login as Member
           </Button>
-          <Button variant="contained" className={classes.googleButton} onClick={handleGoogleSignIn}>
+          {/* <Button variant="contained" className={classes.googleButton} onClick={handleGoogleSignIn}>
             Sign in with Google
-          </Button>
+          </Button> */}
 
           <div className={classes.dividerText}>or</div>
 
