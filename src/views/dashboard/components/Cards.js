@@ -18,7 +18,7 @@ const cards = [
     },
     {
       title: "Success Story 2",
-      description: "Check out the amazing story of how Mr. Faisal became the CTO of Bangladesh Finance",
+      description: " description of success story",
       image: "/images/success2.jpg", // Ensure this path is correct and accessible
     },
   ];
