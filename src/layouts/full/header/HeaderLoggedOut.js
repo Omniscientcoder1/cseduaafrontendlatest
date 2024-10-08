@@ -127,7 +127,16 @@ const HeaderLoggedOut = (props) => {
   }));
 
   const ButtonStyled = styled(Button)(({ theme }) => ({
-    color: theme.palette.text.primary,
+    backgroundColor: '#fff',
+    color: theme.palette.primary.main,
+    borderRadius: '50px',
+    padding: '8px 20px',
+    textTransform: 'none',
+    boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)',
+    transition: 'background-color 0.3s ease',
+    '&:hover': {
+      backgroundColor: '#FFD700', // Yellow hover effect
+    },
   }));
 
   return (

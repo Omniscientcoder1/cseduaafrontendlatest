@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import logo from 'src/assets/images/logos/result.svg';
+// import React from 'react';
 import { styled } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const LinkStyled = styled(Link)(() => ({
   height: '70px',
@@ -12,13 +12,13 @@ const LinkStyled = styled(Link)(() => ({
 const Logo = ({ authenticated = true }) => {
   return (
     <div className="d-flex justify-content-center align-items-center">
-      <Link to={authenticated ? "/" : "/home"}>
-        <img src={logo} style={{ width: 70, margin: "10px 10px 10px 0px"}} />
+      <Link to={authenticated ? '/' : '/home'}>
+        <img
+          src="/Final AA PNG.png"
+          alt="CSEDU Alumni Association Logo"
+          style={{ width: 170, margin: '10px 10px 10px 0px' }}
+        />
       </Link>
-      <div>
-        <h3 className="mb-0 mt-1">CSEDU</h3>
-        <h6 style={{ letterSpacing: 1, marginLeft: 2 }}>ALUMNI ASSOCIATION</h6>
-      </div>
     </div>
   );
 };

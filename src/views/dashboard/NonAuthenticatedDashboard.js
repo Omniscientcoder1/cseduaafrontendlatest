@@ -9,9 +9,8 @@ import { auth, provider } from 'src/views/authentication/auth/firebaseConfig';
 import cards from 'src/views/dashboard/components/Cards'; // Importing the cards array
 import CustomCard from 'src/views/dashboard/components/CustomCard';
 // Import images
+import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
-import backgroundQuote1 from 'src/assets/images/background_quote1.png';
-import backgroundQuote2 from 'src/assets/images/background_quote2.png';
 import { AuthContext } from 'src/context/AuthContext';
 import { privateAxios } from 'src/services/request/axiosConfig';
 import { setTokenInHeader } from 'src/services/request/axiosHelper';
@@ -180,8 +179,8 @@ const useStyles = makeStyles((theme) => ({
   },
   backgroundImage: {
     position: 'absolute',
-    width: '200px', // Example size, adjust as needed
-    height: '200px', // Example size, adjust as needed
+    width: '2560px', // Example size, adjust as needed
+    height: '1440px', // Example size, adjust as needed
     zIndex: 1, // Ensure the image stays behind the content
     opacity: 0.5, // Adjust opacity as needed
     pointerEvents: 'none', // Prevent interaction with the image
@@ -433,29 +432,22 @@ const NonAuthenticatedDashboard = () => {
   const handleRegisterModalClose = () => setShowRegisterModal(false);
   return (
     <div>
-      {/* Background Images */}
-      <img
-        src={backgroundQuote1}
-        alt="Background 1"
-        className={classes.backgroundImage}
-        style={{ bottom: '10%', left: '10%' }}
-      />
-      <img
-        src={backgroundQuote2}
-        alt="Background 2"
-        className={classes.backgroundImage}
-        style={{ top: '10%', right: '10%' }}
-      />
-
       {/* Hero Section */}
-      <div className={classes.heroSection}>
-        <div className={classes.leftContainer}>
-          <h3 className={classes.title}>Dhaka University CSE Alumni Association</h3>
-          <p className={classes.subtitle}>
-            Reconnect with your <span style={{ color: '#f5a623 !important' }}>Peers</span>.
-          </p>
 
-          {/* <TextField
+      <div className={classes.heroSection}>
+        <motion.div
+          className={classes.leftContainer}
+          initial={{ opacity: 0, x: -100 }} // Start 100px to the left
+          animate={{ opacity: 1, x: 0 }} // Animate to original position
+          transition={{ duration: 1, delay: 0.5 }} // Adjust duration and delay as needed
+        >
+          <div className={classes.leftContainer}>
+            <h3 className={classes.title}>Dhaka University CSE Alumni Association</h3>
+            <p className={classes.subtitle}>
+              Reconnect with your <span style={{ color: '#f5a623 !important' }}>Peers</span>.
+            </p>
+
+            {/* <TextField
             label="Username"
             placeholder="abcd@example.com"
             variant="outlined"
@@ -467,40 +459,47 @@ const NonAuthenticatedDashboard = () => {
             variant="outlined"
             className={classes.inputField}
           /> */}
-          <Button
-            variant="contained"
-            className={classes.button}
-            href="/auth/login" // Use href to link to /auth/login
-          >
-            Login as Member
-          </Button>
-          {/* <Button variant="contained" className={classes.googleButton} onClick={handleGoogleSignIn}>
+            <Button
+              variant="contained"
+              className={classes.button}
+              href="/auth/login" // Use href to link to /auth/login
+            >
+              Login as Member
+            </Button>
+            {/* <Button variant="contained" className={classes.googleButton} onClick={handleGoogleSignIn}>
             Sign in with Google
           </Button> */}
 
-          <div className={classes.dividerText}>or</div>
+            <div className={classes.dividerText}>or</div>
 
-          <Button
-            variant="contained"
-            className={classes.greenButton}
-            onClick={handleRegisterModalOpen} // Open modal on click
-          >
-            Apply for New Membership
-          </Button>
+            <Button
+              variant="contained"
+              className={classes.greenButton}
+              onClick={handleRegisterModalOpen} // Open modal on click
+            >
+              Apply for New Membership
+            </Button>
 
-          <div className={classes.dividerText}>
-            <span>forgot password?</span>
-            <a href="/auth/forgot-password" style={{ color: '#007bff', marginLeft: '10px' }}>
-              Reset Password
-            </a>
+            <div className={classes.dividerText}>
+              <span>forgot password?</span>
+              <a href="/auth/forgot-password" style={{ color: '#007bff', marginLeft: '10px' }}>
+                Reset Password
+              </a>
+            </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Right Side: Video */}
-        <div className={classes.videoContainer}>
+
+        <motion.div
+          className={classes.videoContainer}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.3 }}
+        >
           <iframe
-            width="600" // Adjust this to your desired width
-            height="300" // Adjust this to your desired height
+            width="600"
+            height="300"
             src="https://www.youtube.com/embed/VtuPSHhwjY8"
             title="Dhaka University: Centennial Illumination | Documentary"
             frameBorder="0"
@@ -508,12 +507,21 @@ const NonAuthenticatedDashboard = () => {
             allowFullScreen
             className={classes.videoStyles}
           ></iframe>
-        </div>
+        </motion.div>
       </div>
 
       {/* Welcome Section */}
       <div>
-        <Typography variant="h3">Welcome to CSEDUAA</Typography>
+        <motion.h3
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          style={{ textAlign: 'justify' }}
+        >
+          <Typography variant="h3">Welcome to CSEDUAA</Typography>
+        </motion.h3>
+
         <Divider
           sx={{
             height: 4,
@@ -521,26 +529,43 @@ const NonAuthenticatedDashboard = () => {
             margin: '16px 0',
           }}
         />
-        <p style={{ textAlign: 'justify' }}>
-          The Department of Computer Science and Engineering (CSE) at University of Dhaka (also
-          known as Dhaka University or DU) is a place where brightest of minds from all over the
-          country assemble for a greater future. The department, popularly known as CSEDU, has been
-          inspiring the best and brightest for more than twenty three years in fostering the
-          frontiers of Computer Science and Engineering. We consider all members of the community as
-          catalysts of evolution and inspire them to break away from traditional learn and apply
-          mentality to create new knowledge and instigate others to do the same. Our credibility and
-          efficacy of the methods of education is reflected by our alumni who have been performing
-          with excellence in their respective fields; in the top ranking universities as teachers
-          and researchers and in the top companies all around the world as software engineers and IT
-          specialists. Our students are well equipped to take the challenge to stand out as the
-          leaders of tomorrow. We welcome all in our community who are willing to take the
-          challenge. Welcome to progress. Welcome to CSEDU.
-        </p>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          style={{ textAlign: 'justify' }}
+        >
+          <p style={{ textAlign: 'justify' }}>
+            The Department of Computer Science and Engineering (CSE) at University of Dhaka (also
+            known as Dhaka University or DU) is a place where brightest of minds from all over the
+            country assemble for a greater future. The department, popularly known as CSEDU, has
+            been inspiring the best and brightest for more than twenty three years in fostering the
+            frontiers of Computer Science and Engineering. We consider all members of the community
+            as catalysts of evolution and inspire them to break away from traditional learn and
+            apply mentality to create new knowledge and instigate others to do the same. Our
+            credibility and efficacy of the methods of education is reflected by our alumni who have
+            been performing with excellence in their respective fields; in the top ranking
+            universities as teachers and researchers and in the top companies all around the world
+            as software engineers and IT specialists. Our students are well equipped to take the
+            challenge to stand out as the leaders of tomorrow. We welcome all in our community who
+            are willing to take the challenge. Welcome to progress. Welcome to CSEDU.
+          </p>
+        </motion.p>
       </div>
 
       {/* About Section */}
       <div>
-        <Typography variant="h3">About CSEDUAA</Typography>
+        <motion.h3
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          style={{ textAlign: 'justify' }}
+        >
+          <Typography variant="h3">About CSEDUAA</Typography>
+        </motion.h3>
         <Divider
           sx={{
             height: 4,
@@ -548,24 +573,34 @@ const NonAuthenticatedDashboard = () => {
             margin: '16px 0',
           }}
         />
-        <p style={{ textAlign: 'justify' }}>
-          CSEDU Alumni Association is a vibrant community of past graduates who have walked the
-          halls of the University of Dhaka's prestigious CSE department. This association is not
-          just an alumni network; it is a family of professionals, pioneers, and trailblazers who
-          have gone on to make significant contributions in the field of technology and beyond.
-        </p>
-        <p style={{ textAlign: 'justify' }}>
-          Through CSEDUAA, alumni have the opportunity to give back to their alma mater in various
-          ways, including guest lectures, scholarship programs, and collaborative research projects.
-          The association is dedicated to upholding the legacy of excellence associated with the CSE
-          department of the University of Dhaka and strives to contribute positively to the tech
-          community both locally and globally.
-        </p>
-        <p style={{ textAlign: 'justify' }}>
-          Joining CSEDUAA is more than just staying connected; it's about being a part of a
-          continuing journey of innovation and excellence. We welcome all CSEDU alumni to be a part
-          of this ever-growing family.
-        </p>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          style={{ textAlign: 'justify' }}
+        >
+          <p style={{ textAlign: 'justify' }}>
+            CSEDU Alumni Association is a vibrant community of past graduates who have walked the
+            halls of the University of Dhaka's prestigious CSE department. This association is not
+            just an alumni network; it is a family of professionals, pioneers, and trailblazers who
+            have gone on to make significant contributions in the field of technology and beyond.
+          </p>
+
+          <p style={{ textAlign: 'justify' }}>
+            Through CSEDUAA, alumni have the opportunity to give back to their alma mater in various
+            ways, including guest lectures, scholarship programs, and collaborative research
+            projects. The association is dedicated to upholding the legacy of excellence associated
+            with the CSE department of the University of Dhaka and strives to contribute positively
+            to the tech community both locally and globally.
+          </p>
+
+          <p style={{ textAlign: 'justify' }}>
+            Joining CSEDUAA is more than just staying connected; it's about being a part of a
+            continuing journey of innovation and excellence. We welcome all CSEDU alumni to be a
+            part of this ever-growing family.
+          </p>
+        </motion.p>
       </div>
 
       {/* Current Committee Section */}
@@ -593,21 +628,25 @@ const NonAuthenticatedDashboard = () => {
         />
         <div className={classes.cardGrid}>
           {cards.slice(0, 2).map((card, index) => (
-            <div
+            <motion.div
               key={index}
               className={classes.customCard}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: index * 0.2 }}
               onClick={handleCardClick}
               role="button"
               tabIndex={0}
             >
               <CustomCard title={card.title} description={card.description} image={card.image} />
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
 
       {/* Alumni Success Stories Section */}
-      <div className={classes.sectionContainer}>
+      {/* <div className={classes.sectionContainer}>
         <Typography variant="h3">Alumni Success Stories</Typography>
         <Divider
           sx={{
@@ -629,7 +668,7 @@ const NonAuthenticatedDashboard = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* Get Involved Section */}
       <div className={classes.sectionContainer}>
