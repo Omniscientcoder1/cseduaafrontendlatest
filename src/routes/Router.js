@@ -1,33 +1,32 @@
-import React, { lazy } from 'react';
+import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
-import Loadable from '../layouts/full/shared/loadable/Loadable';
-import EventsManagement from 'src/views/admin/events-management/EventsManagement';
-import EmailsManagement from 'src/views/admin/emails-management/EmailsManagement';
-import UsersManagement from 'src/views/admin/users-management/UsersManagement';
-import Emails from 'src/views/user/emails/Emails';
-import Event from 'src/views/user/events/Event';
-import Students from 'src/views/user/students/Students';
-import Blogs from 'src/views/user/blogs/Blogs';
-import Profile from 'src/views/dashboard/Profile';
+import AuthAdminGuard from 'src/components/container/AuthAdminGuard';
 import AuthGuard from 'src/components/container/AuthGuard';
 import AuthVerifiedGuard from 'src/components/container/AuthVerifiedGuard';
-import AuthAdminGuard from 'src/components/container/AuthAdminGuard';
-import BlogDetailsPage from 'src/views/user/blogs/BlogDetails';
-import EventsDetails from 'src/views/user/events/EventDetails';
-import StudentDetails from 'src/views/user/students/StudentDetails';
-import HallOfFame from 'src/views/admin/hall-of-fame/HallOfFame';
-import PendingRegistrations from 'src/views/admin/pending-registrations/PendingRegistrations';
-import MembershipClaims from 'src/views/admin/membership-claims/MembershipClaims';
 import UnAuthGuard from 'src/components/container/UnAuthGuard';
+import EmailsManagement from 'src/views/admin/emails-management/EmailsManagement';
+import EventsManagement from 'src/views/admin/events-management/EventsManagement';
+import HallOfFame from 'src/views/admin/hall-of-fame/HallOfFame';
+import MembershipClaims from 'src/views/admin/membership-claims/MembershipClaims';
+import PendingRegistrations from 'src/views/admin/pending-registrations/PendingRegistrations';
+import UsersManagement from 'src/views/admin/users-management/UsersManagement';
 import ForgotPassword from 'src/views/authentication/ForgotPassword';
 import ResetPassword from 'src/views/authentication/ResetPassword';
-import Payments from 'src/views/user/payments/Payments';
-import PaymentsSuccess from 'src/views/user/payments/Payment-Success';
-import PaymentFailed from 'src/views/user/payments/Payment-Failed';
+import BlogPage from 'src/views/dashboard/components/BlogPage';
+import Profile from 'src/views/dashboard/Profile';
+import BlogDetailsPage from 'src/views/user/blogs/BlogDetails';
+import Blogs from 'src/views/user/blogs/Blogs';
+import Emails from 'src/views/user/emails/Emails';
+import Event from 'src/views/user/events/Event';
+import EventsDetails from 'src/views/user/events/EventDetails';
 import PaymentCancelled from 'src/views/user/payments/Payment-Cancelled';
-import TabAccount from 'src/components/account-settings/TabAccount';
+import PaymentFailed from 'src/views/user/payments/Payment-Failed';
+import PaymentsSuccess from 'src/views/user/payments/Payment-Success';
 import PaymentForm from 'src/views/user/payments/PaymentForm';
-import { element, exact } from 'prop-types';
+import Payments from 'src/views/user/payments/Payments';
+import StudentDetails from 'src/views/user/students/StudentDetails';
+import Students from 'src/views/user/students/Students';
+import Loadable from '../layouts/full/shared/loadable/Loadable';
 
 /* ***Layouts**** */
 const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
@@ -134,8 +133,8 @@ const Router = [
         ),
       },
       {
-        path:'/payments/success',
-        exact:true,
+        path: '/payments/success',
+        exact: true,
         element: (
           <AuthVerifiedGuard>
             <PaymentsSuccess />
@@ -143,8 +142,8 @@ const Router = [
         ),
       },
       {
-        path:'/payments/failed',
-        exact:true,
+        path: '/payments/failed',
+        exact: true,
         element: (
           <AuthVerifiedGuard>
             <PaymentFailed />
@@ -152,8 +151,8 @@ const Router = [
         ),
       },
       {
-        path:'/payments/cancel',
-        exact:true,
+        path: '/payments/cancel',
+        exact: true,
         element: (
           <AuthVerifiedGuard>
             <PaymentCancelled />
@@ -311,6 +310,14 @@ const Router = [
         element: (
           <UnAuthGuard>
             <NonAuthenticatedDashboard />
+          </UnAuthGuard>
+        ),
+      },
+      {
+        path: '/home/blog-page',
+        element: (
+          <UnAuthGuard>
+            <BlogPage />
           </UnAuthGuard>
         ),
       },

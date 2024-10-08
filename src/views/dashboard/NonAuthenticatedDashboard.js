@@ -1,21 +1,18 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { Typography, Button, TextField, Divider } from '@mui/material';
+import { Button, Divider, Modal, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { useNavigate, Link } from 'react-router-dom'; // Use useNavigate instead of useHistory
-import axios from 'axios'; // Import axios for making API requests
-import { getCommittee } from 'src/services/query/committee';
-import CommitteeSlider from 'src/components/shared/CommitteeSlider';
-import CustomCard from 'src/views/dashboard/components/CustomCard';
-import cards from 'src/views/dashboard/components/Cards'; // Importing the cards array
 import { signInWithPopup } from 'firebase/auth';
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Use useNavigate instead of useHistory
+import CommitteeSlider from 'src/components/shared/CommitteeSlider';
+import { getCommittee } from 'src/services/query/committee';
 import { auth, provider } from 'src/views/authentication/auth/firebaseConfig';
+import cards from 'src/views/dashboard/components/Cards'; // Importing the cards array
+import CustomCard from 'src/views/dashboard/components/CustomCard';
 // Import images
+import { toast } from 'react-toastify';
 import backgroundQuote1 from 'src/assets/images/background_quote1.png';
 import backgroundQuote2 from 'src/assets/images/background_quote2.png';
-import { STORAGE_KEY_ACCESS_TOKEN, STORAGE_KEY_REFRESH_TOKEN } from 'src/constants/localstorage';
-import { LocalStorage } from 'src/services/storage/localstorage';
 import { AuthContext } from 'src/context/AuthContext';
-import { toast } from 'react-toastify';
 import { privateAxios } from 'src/services/request/axiosConfig';
 import { setTokenInHeader } from 'src/services/request/axiosHelper';
 
@@ -285,6 +282,7 @@ const NonAuthenticatedDashboard = () => {
   const navigate = useNavigate();
   const [committee, setCommittee] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
 
   // Google Sign-In function with token verification
   const handleGoogleSignIn = () => {
@@ -427,8 +425,12 @@ const NonAuthenticatedDashboard = () => {
     fetchCommittee();
   }, []);
   const handleCardClick = () => {
-    navigate('/auth/login'); // Redirect to login page on card click
+    navigate('/home/blog-page'); // Redirect to login page on card click
   };
+
+  // Handlers to open and close the modal
+  const handleRegisterModalOpen = () => setShowRegisterModal(true);
+  const handleRegisterModalClose = () => setShowRegisterModal(false);
   return (
     <div>
       {/* Background Images */}
@@ -478,13 +480,17 @@ const NonAuthenticatedDashboard = () => {
 
           <div className={classes.dividerText}>or</div>
 
-          <Button variant="contained" className={classes.greenButton} href="/auth/register">
+          <Button
+            variant="contained"
+            className={classes.greenButton}
+            onClick={handleRegisterModalOpen} // Open modal on click
+          >
             Apply for New Membership
           </Button>
 
           <div className={classes.dividerText}>
             <span>forgot password?</span>
-            <a href="#" style={{ color: '#007bff', marginLeft: '10px' }}>
+            <a href="/auth/forgot-password" style={{ color: '#007bff', marginLeft: '10px' }}>
               Reset Password
             </a>
           </div>
@@ -492,20 +498,26 @@ const NonAuthenticatedDashboard = () => {
 
         {/* Right Side: Video */}
         <div className={classes.videoContainer}>
-          <video className={classes.videoStyles} controls>
-            <source src="path-to-your-video.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          <iframe
+            width="600" // Adjust this to your desired width
+            height="300" // Adjust this to your desired height
+            src="https://www.youtube.com/embed/VtuPSHhwjY8"
+            title="Dhaka University: Centennial Illumination | Documentary"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            className={classes.videoStyles}
+          ></iframe>
         </div>
       </div>
 
       {/* Welcome Section */}
       <div>
-        <Typography variant="h3">Welcome to CSEDU</Typography>
+        <Typography variant="h3">Welcome to CSEDUAA</Typography>
         <Divider
           sx={{
             height: 4,
-            backgroundColor: '#000000',
+            backgroundColor: '#00000',
             margin: '16px 0',
           }}
         />
@@ -641,7 +653,57 @@ const NonAuthenticatedDashboard = () => {
           </Button> */}
         </div>
       </div>
+      {/* Register Modal */}
+      <Modal open={showRegisterModal} onClose={handleRegisterModalClose}>
+        <div
+          style={{
+            padding: '20px',
+            maxWidth: '500px',
+            margin: 'auto',
+            backgroundColor: '#fff',
+            borderRadius: '8px',
+            outline: 'none',
+          }}
+        >
+          <Typography variant="h6" gutterBottom>
+            Join the CSEDU Alumni Association
+          </Typography>
+          <Divider style={{ marginBottom: '20px' }} />
+          <Typography variant="body1" gutterBottom>
+            Thank you for your interest in joining the Dhaka University CSE Alumni Association.
+            Becoming a member allows you to reconnect, stay updated, and contribute to our
+            community.
+          </Typography>
+          <Typography variant="body2" gutterBottom>
+            <strong>How to Register:</strong> You can apply for membership by following the steps in
+            the guide below.
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              handleRegisterModalClose();
+              navigate('/auth/register');
+            }}
+            fullWidth
+            style={{ marginTop: '10px' }}
+          >
+            Proceed to Register
+          </Button>
 
+          <Button
+            variant="outlined"
+            color="secondary"
+            href="/registration-guide.pdf" // Path to the PDF in the public folder
+            target="_blank" // Opens in a new tab
+            rel="noopener noreferrer" // Security best practice
+            fullWidth
+            sx={{ mt: 2 }}
+          >
+            View Registration Guide (PDF)
+          </Button>
+        </div>
+      </Modal>
       {/* Footer Section */}
       <div className={classes.footer}>
         <Typography variant="body1">
