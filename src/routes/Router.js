@@ -12,7 +12,10 @@ import PendingRegistrations from 'src/views/admin/pending-registrations/PendingR
 import UsersManagement from 'src/views/admin/users-management/UsersManagement';
 import ForgotPassword from 'src/views/authentication/ForgotPassword';
 import ResetPassword from 'src/views/authentication/ResetPassword';
+import AboutUs from 'src/views/dashboard/components/AboutUs';
 import BlogPage from 'src/views/dashboard/components/BlogPage';
+import PrivacyPolicy from 'src/views/dashboard/components/PrivacyPolicy';
+import TermsAndConditions from 'src/views/dashboard/components/TermsAndConditions';
 import Profile from 'src/views/dashboard/Profile';
 import BlogDetailsPage from 'src/views/user/blogs/BlogDetails';
 import Blogs from 'src/views/user/blogs/Blogs';
@@ -27,6 +30,7 @@ import Payments from 'src/views/user/payments/Payments';
 import StudentDetails from 'src/views/user/students/StudentDetails';
 import Students from 'src/views/user/students/Students';
 import Loadable from '../layouts/full/shared/loadable/Loadable';
+import ReturnAndRefundPolicy from 'src/views/dashboard/components/ReturnAndRefundPolicy';
 
 /* ***Layouts**** */
 const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
@@ -318,6 +322,38 @@ const Router = [
         element: (
           <UnAuthGuard>
             <BlogPage />
+          </UnAuthGuard>
+        ),
+      },
+      {
+        path: '/home/about-us',
+        element: (
+          <UnAuthGuard>
+            <AboutUs />
+          </UnAuthGuard>
+        ),
+      },
+      {
+        path: '/home/privacy-policy',
+        element: (
+          <UnAuthGuard>
+            <PrivacyPolicy />
+          </UnAuthGuard>
+        ),
+      },
+      {
+        path: '/home/terms-and-conditions',
+        element: (
+          <UnAuthGuard>
+            <TermsAndConditions />
+          </UnAuthGuard>
+        ),
+      },
+      {
+        path: '/home/return-and-refund-policy',
+        element: (
+          <UnAuthGuard>
+            <ReturnAndRefundPolicy />
           </UnAuthGuard>
         ),
       },

@@ -749,14 +749,32 @@ const NonAuthenticatedDashboard = () => {
           © 2024 Dhaka University Computer Science and Engineering Alumni Association. All rights
           reserved.
         </Typography>
+
         <div>
-          <a href="/privacy-policy" className={classes.footerLink}>
+          <a href="/home/privacy-policy" className={classes.footerLink}>
             Privacy Policy
           </a>
-          <a href="/terms-of-service" className={classes.footerLink}>
-            Terms of Service
+          <a href="/home/return-and-refund-policy" className={classes.footerLink}>
+            Return and Refund Policy
+          </a>
+          <a href="/home/terms-and-conditions" className={classes.footerLink}>
+            Terms and Conditions
+          </a>
+          <a href="/home/about-us" className={classes.footerLink}>
+            About Us
           </a>
         </div>
+        <img
+          src="/payment-banner.png" // Path to your image in the public folder
+          alt="Footer Logo"
+          style={{
+            width: '100%', // Set width to 100% to cover the full length of the footer
+            height: 'auto', // Keep height auto to maintain aspect ratio
+            marginTop: '30px', // Remove margin to ensure no gaps at the top
+            marginBottom: '0', // Remove bottom margin for a clean fit
+            padding: '0', // Ensure no padding
+          }}
+        />
       </div>
     </div>
   );
