@@ -3,13 +3,7 @@ import React, { createContext, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { STORAGE_KEY_ACCESS_TOKEN, STORAGE_KEY_REFRESH_TOKEN } from 'src/constants/localstorage';
 import { login, logout } from 'src/services/query/login';
-import {
-  getUserDetails,
-  resetPassword,
-  resetPasswordConfirm,
-  getUserDetailByUsername,
-  getUserProfile,
-} from 'src/services/query/user';
+import { getUserDetails, resetPassword, resetPasswordConfirm, getUserDetailByUsername, getUserProfile } from 'src/services/query/user';
 import { privateAxios } from 'src/services/request/axiosConfig';
 import { setTokenInHeader } from 'src/services/request/axiosHelper';
 import { LocalStorage } from 'src/services/storage/localstorage';
@@ -114,6 +108,7 @@ export const AuthContextProvider = ({ children }) => {
       throw error;
     }
   }
+  
 
   // const updateProfile = useCallback(
   //   async (data) => {

@@ -31,6 +31,7 @@ import StudentDetails from 'src/views/user/students/StudentDetails';
 import Students from 'src/views/user/students/Students';
 import Loadable from '../layouts/full/shared/loadable/Loadable';
 import ReturnAndRefundPolicy from 'src/views/dashboard/components/ReturnAndRefundPolicy';
+import DonationForm from 'src/views/user/payments/DonationForm';
 
 /* ***Layouts**** */
 const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
@@ -169,6 +170,15 @@ const Router = [
         element: (
           <AuthVerifiedGuard>
             <PaymentForm />
+          </AuthVerifiedGuard>
+        ),
+      },
+      {
+        path: '/donation-form',
+        exact: true,
+        element: (
+          <AuthVerifiedGuard>
+            <DonationForm />
           </AuthVerifiedGuard>
         ),
       },

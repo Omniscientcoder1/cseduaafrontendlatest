@@ -1,66 +1,6 @@
-// import { Button } from '@mui/material';
-// import { useNavigate } from 'react-router-dom';
 
-// // Example data for past transactions
-// const pastTransactions = [
-//   { id: '1', amount: '1000 BDT', date: '2024-09-01' },
-//   { id: '2', amount: '500 BDT', date: '2024-08-25' },
-//   { id: '3', amount: '2000 BDT', date: '2024-08-20' },
-// ];
-
-// const Payments = () => {
-//   const navigate = useNavigate();
-
-//   const handlePayment = () => {
-//     navigate('/payment-form');
-//   };
-
-//   return (
-//     <div>
-//       {/* <Typography variant="h4" gutterBottom>
-//         Past Transactions
-//       </Typography> */}
-//       {/* <Table>
-//         <TableHead>
-//           <TableRow>
-//             <TableCell>Transaction ID</TableCell>
-//             <TableCell>Amount</TableCell>
-//             <TableCell>Date</TableCell>
-//           </TableRow>
-//         </TableHead>
-//         <TableBody>
-//           {pastTransactions.map((transaction) => (
-//             <TableRow key={transaction.id}>
-//               <TableCell>{transaction.id}</TableCell>
-//               <TableCell>{transaction.amount}</TableCell>
-//               <TableCell>{transaction.date}</TableCell>
-//             </TableRow>
-//           ))}
-//         </TableBody>
-//       </Table> */}
-//       <Button
-//         variant="contained"
-//         color="primary"
-//         onClick={handlePayment}
-//         sx={{ marginTop: '20px' }}
-//       >
-//         Lifetime Membership- 20000 Tk
-//       </Button>
-//       <Button
-//         variant="contained"
-//         color="primary"
-//         onClick={handlePayment}
-//         sx={{ marginTop: '20px' }}
-//       >
-//         Annual Membership
-//       </Button>
-//     </div>
-//   );
-// };
-
-// export default Payments;
 import { Add, Remove } from '@mui/icons-material';
-import { Box, Button, Card, CardContent, IconButton, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, IconButton, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -69,20 +9,31 @@ const Payments = () => {
   const [annualAmount, setAnnualAmount] = useState(1000); // Initial amount for 1 year
   const [startYear] = useState(2024); // Membership always starts in 2024
   const [endYear, setEndYear] = useState(2024); // End year based on the number of years selected
+  const [donationType, setDonationType] = useState(''); // Donation type selection
+  const [donationAmount, setDonationAmount] = useState(''); // Custom donation amount
   const navigate = useNavigate();
 
+  // Handle Lifetime Membership Payment
   const handleLifetimePayment = () => {
     navigate('/payment-form', { state: { amount: 20000 } }); // Lifetime membership fee
   };
 
+  // Handle Annual Membership Payment
   const handleAnnualPayment = () => {
-    navigate('/payment-form', { state: { amount: annualAmount } }); // Annual membership fee
+    navigate('/payment-form', { state: { amount: annualAmount } }); // Annual membership fee based on years selected
   };
 
+  // Handle Donation Payment
   const handleDonation = () => {
-    navigate('/payment-form'); // Navigate to the donation form
+    if (!donationAmount || donationAmount <= 0 || !donationType) {
+      alert('Please select a donation type and enter a valid amount.');
+      return;
+    }
+
+    navigate('/donation-form', { state: { amount: donationAmount, donationType } }); // Redirect to donation form
   };
 
+  // Increase the number of years for annual membership
   const handleIncreaseYears = () => {
     setYears((currentYears) => {
       const newYears = currentYears + 1;
@@ -92,6 +43,7 @@ const Payments = () => {
     });
   };
 
+  // Decrease the number of years for annual membership
   const handleDecreaseYears = () => {
     setYears((currentYears) => {
       if (currentYears > 1) {
@@ -100,7 +52,7 @@ const Payments = () => {
         setEndYear(startYear + newYears - 1); // Update the end year for the reduced number of years
         return newYears;
       }
-      return currentYears; // If the years is 1, don't allow it to go lower
+      return currentYears; // Prevent going below 1 year
     });
   };
 
@@ -164,14 +116,49 @@ const Payments = () => {
           <Typography variant="h5" gutterBottom>
             Donate
           </Typography>
-          <Typography variant="body1">Your donation helps us support our programs.</Typography>
+          <Typography variant="body1" gutterBottom>
+            Your donation helps us support our programs.
+          </Typography>
+
+          {/* Dropdown for Donation Type */}
+          <Select
+            fullWidth
+            value={donationType}
+            onChange={(e) => setDonationType(e.target.value)}
+            displayEmpty
+            sx={{ mt: 2 }}
+          >
+            <MenuItem value="" disabled>
+              Select Donation Type
+            </MenuItem>
+            <MenuItem value="zakaat fund">Zakaat Fund</MenuItem>
+            <MenuItem value="Annual Tour">Annual Tour</MenuItem>
+            <MenuItem value="General Donation">General Donation</MenuItem>
+            <MenuItem value="Annual Picnic">Annual Picnic</MenuItem>
+            <MenuItem value="Annual Sports">Annual Sports</MenuItem>
+            <MenuItem value="Inter Dept. Football">Inter Dept. Football</MenuItem>
+            <MenuItem value=" Inter Dept. Cricket"> Inter Dept. Cricket</MenuItem>
+            <MenuItem value="Department Renovation">Department Renovation</MenuItem>
+            <MenuItem value="ICPC Tournament">ICPC Tournament</MenuItem>
+          </Select>
+
+          {/* Input for Custom Donation Amount */}
+          <TextField
+            label="Enter Donation Amount"
+            type="number"
+            value={donationAmount}
+            onChange={(e) => setDonationAmount(e.target.value)}
+            fullWidth
+            sx={{ mt: 2 }}
+          />
+
           <Button
             variant="contained"
             color="secondary"
             onClick={handleDonation}
             sx={{ marginTop: '10px' }}
           >
-            Donate
+            Donate Now
           </Button>
         </CardContent>
       </Card>
@@ -180,3 +167,4 @@ const Payments = () => {
 };
 
 export default Payments;
+
