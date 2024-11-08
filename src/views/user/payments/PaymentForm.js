@@ -142,11 +142,20 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useState } from 'react';
 
 const PaymentForm = () => {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const location = useLocation();
+  const [isAgreed, setIsAgreed] = useState(false);
+
+
+  // const onSubmit = async (data) => {
+  //   if (!isAgreed) {
+  //     alert('Please agree to the terms and conditions before proceeding.');
+  //     return;
+  //   }
 
   // Extract the amount from the passed state
   const { amount } = location.state || { amount: 0 };  // Default to 0 if not provided
@@ -157,18 +166,24 @@ const PaymentForm = () => {
   }, [amount, setValue]);
 
   const onSubmit = async (data) => {
+    if (!isAgreed) {
+          alert('Please agree to the terms and conditions before proceeding.');
+          return;
+        }
+    console.log(data);
+    // return;
     const tran_id = new Date().getTime().toString();
     const paymentData = {
       ...data,
       tran_id: tran_id,
-      success_url: 'https://localhost:8000/payments/success/',
-      fail_url: 'https://localhost:8000/payments/fail/',
-      cancel_url: 'https://localhost:8000/payments/cancel/',
-      ipn_url: 'https://localhost:8000/payments/ipn/',
+      success_url: 'http://localhost:8000/payments/success/',
+      fail_url: 'http://localhost:8000/payments/fail/',
+      cancel_url: 'http://localhost:8000/payments/cancel/',
+      ipn_url: 'http://localhost:8000/payments/ipn/',
     };
     try {
       const response = await axios.post(
-        'https://localhost:8000/payments/initiate/',
+        'http://localhost:8000/payments/initiate/',
         paymentData,
         {
           headers: {
@@ -274,6 +289,18 @@ const PaymentForm = () => {
               className="form-control"
             />
             {errors.country && <p className="text-danger">{errors.country.message}</p>}
+          </div>
+          <div className="mb-3 form-check">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id="termsCheckbox"
+              checked={isAgreed}
+              onChange={() => setIsAgreed(!isAgreed)}
+            />
+            <label className="form-check-label" htmlFor="termsCheckbox">
+              I HAVE READ AND AGREE TO THE WEBSITE'S TERMS AND CONDITIONS, PRIVACY POLICY, REFUND POLICY
+            </label>
           </div>
           <button type="submit" className="btn btn-primary w-100">
             Pay Now
