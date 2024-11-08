@@ -150,13 +150,6 @@ const PaymentForm = () => {
   const location = useLocation();
   const [isAgreed, setIsAgreed] = useState(false);
 
-
-  // const onSubmit = async (data) => {
-  //   if (!isAgreed) {
-  //     alert('Please agree to the terms and conditions before proceeding.');
-  //     return;
-  //   }
-
   // Extract the amount from the passed state
   const { amount } = location.state || { amount: 0 };  // Default to 0 if not provided
 
