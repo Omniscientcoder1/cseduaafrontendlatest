@@ -1,20 +1,32 @@
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useState,useContext,useEffect } from 'react';
+import { AuthContext } from 'src/context/AuthContext';
 
 const DonationForm = () => {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const location = useLocation();
-
+  const { userData } = useContext(AuthContext);
   // Extract the amount from the passed state
   const { amount } = location.state || { amount: 0 };  // Default to 0 if not provided
-
+  const email_address = userData.email_address;
+  const name = `${userData.first_name} ${userData.last_name}`;
+  const address = userData.hometown !== null ? userData.hometown : '';
+  const city = userData.hometown !== null ? userData.hometown : '';
+  const country = userData.present_address.country !== null ? userData.present_address.country : '';
+  const phone_number = userData.phone_number !== null ? userData.phone_number : '';
   // Set the amount in the form when the component loads
   useEffect(() => {
-    setValue('amount', amount);  // Set the amount field with the value passed from the state
-  }, [amount, setValue]);
+  setValue('amount', amount);
+  setValue('cus_name', name); 
+  setValue('cus_address', address); 
+  setValue('cus_email', email_address); 
+  setValue('cus_city', city); 
+  setValue('cus_country', country); 
+  setValue('cus_phone', phone_number); 
+}, [amount, email_address,name,address,city,country,phone_number, setValue]);
 
   const onSubmit = async (data) => {
     const tran_id = new Date().getTime().toString();

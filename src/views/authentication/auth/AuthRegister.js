@@ -27,7 +27,7 @@ const AuthRegister = ({ title, subtitle, subtext }) => {
 
   const validate = (value) => {
     // Regular expressions for each criteria
-    const minLengthRegex = /.{12,}/;
+    const minLengthRegex = /.{8,}/;
     const lowercaseRegex = /[a-z]/;
     const uppercaseRegex = /[A-Z]/;
     const numberRegex = /[0-9]/;
@@ -35,7 +35,7 @@ const AuthRegister = ({ title, subtitle, subtext }) => {
 
     // Check each criteria and return appropriate error message if not met
     if (!minLengthRegex.test(value)) {
-      return false || 'Password must be at least 12 characters long';
+      return false || 'Password must be at least 8 characters long';
     }
     if (!lowercaseRegex.test(value)) {
       return false || 'Password must contain at least one lowercase letter';

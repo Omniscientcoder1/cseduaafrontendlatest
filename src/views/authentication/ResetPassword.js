@@ -55,6 +55,35 @@ const ResetPassword = () => {
     }
   };
 
+   const validate = (value) => {
+    // Regular expressions for each criteria
+    const minLengthRegex = /.{8,}/;
+    const lowercaseRegex = /[a-z]/;
+    const uppercaseRegex = /[A-Z]/;
+    const numberRegex = /[0-9]/;
+    const specialCharRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+
+    // Check each criteria and return appropriate error message if not met
+    if (!minLengthRegex.test(value)) {
+      return false || 'Password must be at least 8 characters long';
+    }
+    if (!lowercaseRegex.test(value)) {
+      return false || 'Password must contain at least one lowercase letter';
+    }
+    if (!uppercaseRegex.test(value)) {
+      return false || 'Password must contain at least one uppercase letter';
+    }
+    if (!numberRegex.test(value)) {
+      return false || 'Password must contain at least one number';
+    }
+    if (!specialCharRegex.test(value)) {
+      return false || 'Password must contain at least one special character';
+    }
+
+    // If all criteria are met, return null (no error)
+    return true;
+  };
+
   return (
     <PageContainer title="Reset Password" description="this is reset password page">
       <Box
@@ -105,6 +134,7 @@ const ResetPassword = () => {
                           errors={errors}
                           required={true}
                           register={register}
+                          validate={validate}
                           type="password"
                           class_name="col-12"
                           label={'New Password'}

@@ -5,12 +5,12 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Payments = () => {
-  const [years, setYears] = useState(1); // Initial number of years
-  const [annualAmount, setAnnualAmount] = useState(1000); // Initial amount for 1 year
-  const [startYear] = useState(2024); // Membership always starts in 2024
-  const [endYear, setEndYear] = useState(2024); // End year based on the number of years selected
-  const [donationType, setDonationType] = useState(''); // Donation type selection
-  const [donationAmount, setDonationAmount] = useState(''); // Custom donation amount
+  const [years, setYears] = useState(1); 
+  const [annualAmount, setAnnualAmount] = useState(1000); 
+  const [startYear] = useState(new Date().getFullYear()); 
+  const [endYear, setEndYear] = useState(startYear + 5);
+  const [donationType, setDonationType] = useState(''); 
+  const [donationAmount, setDonationAmount] = useState(''); 
   const navigate = useNavigate();
 
   // Handle Lifetime Membership Payment
@@ -33,26 +33,28 @@ const Payments = () => {
     navigate('/donation-form', { state: { amount: donationAmount, donationType } }); // Redirect to donation form
   };
 
-  // Increase the number of years for annual membership
   const handleIncreaseYears = () => {
-    setYears((currentYears) => {
+  setYears((currentYears) => {
+    if (currentYears < 5) { 
       const newYears = currentYears + 1;
-      setAnnualAmount(newYears * 1000); // Update the payable amount for the new number of years
-      setEndYear(startYear + newYears - 1); // Update the end year based on the new number of years
+      setAnnualAmount(newYears * 1000); 
+      setEndYear(startYear + newYears - 1); 
       return newYears;
-    });
-  };
+    }
+    return currentYears; 
+  });
+};
 
   // Decrease the number of years for annual membership
   const handleDecreaseYears = () => {
     setYears((currentYears) => {
       if (currentYears > 1) {
         const newYears = currentYears - 1;
-        setAnnualAmount(newYears * 1000); // Update the payable amount for the reduced number of years
-        setEndYear(startYear + newYears - 1); // Update the end year for the reduced number of years
+        setAnnualAmount(newYears * 1000); 
+        setEndYear(startYear + newYears - 1);
         return newYears;
       }
-      return currentYears; // Prevent going below 1 year
+      return currentYears; 
     });
   };
 
