@@ -1,8 +1,9 @@
 
 import { Add, Remove } from '@mui/icons-material';
 import { Box, Button, Card, CardContent, IconButton, MenuItem, Select, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from 'src/context/AuthContext';
 
 const Payments = () => {
   const [years, setYears] = useState(1); 
@@ -12,16 +13,21 @@ const Payments = () => {
   const [donationType, setDonationType] = useState(''); 
   const [donationAmount, setDonationAmount] = useState(''); 
   const navigate = useNavigate();
+  const { userData } = useContext(AuthContext);
 
-  // Handle Lifetime Membership Payment
-  const handleLifetimePayment = () => {
-    navigate('/payment-form', { state: { amount: 20000 } }); // Lifetime membership fee
-  };
+    const handleLifetimePayment = () => {
+      const userId = userData.id; 
+      const membershipId = `LM-CSEDUAA${userId}`; 
+      navigate('/payment-form', { state: { amount: 20000, membershipId } });
+    };
 
-  // Handle Annual Membership Payment
-  const handleAnnualPayment = () => {
-    navigate('/payment-form', { state: { amount: annualAmount } }); // Annual membership fee based on years selected
-  };
+    // Handle Annual Membership Payment
+    const handleAnnualPayment = () => {
+      const userId = userData.id; 
+      const membershipId = `AM-CSEDUAA${userId}`;
+      navigate('/payment-form', { state: { amount: annualAmount, membershipId } }); // Navigate with membershipId
+    };
+
 
   // Handle Donation Payment
   const handleDonation = () => {

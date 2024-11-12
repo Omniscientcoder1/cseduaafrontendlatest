@@ -9,19 +9,17 @@ const PaymentForm = () => {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
   const location = useLocation();
   const [isAgreed, setIsAgreed] = useState(false);
-   const { userData } = useContext(AuthContext);
+  const { userData } = useContext(AuthContext);
 
   // Extract the amount from the passed state
-  const { amount } = location.state || { amount: 0 };  // Default to 0 if not provided
-  // console.log(userData.present_address);
-  const email_address = userData.email_address;
-  const name = `${userData.first_name} ${userData.last_name}`;
-  const address = userData.hometown !== null ? userData.hometown : '';
-  const city = userData.hometown !== null ? userData.hometown : '';
-  const country = userData.present_address.country !== null ? userData.present_address.country : '';
-  const phone_number = userData.phone_number !== null ? userData.phone_number : '';
-  // console.log(country);
-  // console.log("phone_number: ",phone_number);
+  const { amount,membershipId  } = location.state || { amount: 0 };  // Default to 0 if not provided
+  // console.log(membershipId);
+  const email_address = userData && userData.email_address ? userData.email_address : '';
+  const name = userData && `${userData.first_name || ''} ${userData.last_name || ''}`;
+  const address = userData && userData.hometown ? userData.hometown : '';
+  const city = userData && userData.hometown ? userData.hometown : '';
+  const phone_number = userData && userData.phone_number ? userData.phone_number : '';
+  const country = userData.present_address && userData.present_address.country ? userData.present_address.country : '';
 
   // Set the amount in the form when the component loads
  useEffect(() => {
@@ -39,7 +37,7 @@ const PaymentForm = () => {
           alert('Please agree to the terms and conditions before proceeding.');
           return;
         }
-    console.log(data);
+    // console.log(data);
     // return;
     const tran_id = new Date().getTime().toString();
     const paymentData = {
@@ -76,6 +74,11 @@ const PaymentForm = () => {
         <h2 className="card-title text-center mb-4">SSLCOMMERZ Payment form</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="w-100">
           {/* Predefined Amount */}
+          <input
+          type="hidden"
+          {...register('membershipId')}
+          value={membershipId || ''}
+        />
           <div className="mb-3">
             <input
               type="number"

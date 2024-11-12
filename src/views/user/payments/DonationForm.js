@@ -11,12 +11,12 @@ const DonationForm = () => {
   const { userData } = useContext(AuthContext);
   // Extract the amount from the passed state
   const { amount } = location.state || { amount: 0 };  // Default to 0 if not provided
-  const email_address = userData.email_address;
-  const name = `${userData.first_name} ${userData.last_name}`;
-  const address = userData.hometown !== null ? userData.hometown : '';
-  const city = userData.hometown !== null ? userData.hometown : '';
-  const country = userData.present_address.country !== null ? userData.present_address.country : '';
-  const phone_number = userData.phone_number !== null ? userData.phone_number : '';
+  const email_address = userData && userData.email_address ? userData.email_address : '';
+  const name = userData && `${userData.first_name || ''} ${userData.last_name || ''}`;
+  const address = userData && userData.hometown ? userData.hometown : '';
+  const city = userData && userData.hometown ? userData.hometown : '';
+  const phone_number = userData && userData.phone_number ? userData.phone_number : '';
+  const country = userData.present_address && userData.present_address.country ? userData.present_address.country : '';
   // Set the amount in the form when the component loads
   useEffect(() => {
   setValue('amount', amount);
@@ -63,6 +63,11 @@ const DonationForm = () => {
       <div className="card p-4 shadow w-100 max-w-md">
         <h2 className="card-title text-center mb-4">SSLCOMMERZ Payment form</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="w-100">
+         <input
+          type="hidden"
+          {...register('user_id')}
+          value={userData?.id || ''}
+        />
           {/* Predefined Amount */}
           <div className="mb-3">
             <input
