@@ -37,6 +37,15 @@ export const getPendingUsers = async (data) => {
   }
 };
 
+export const getPaymentUsers = async (data) => {
+  try {
+    const response = await privateAxios.get(`${endpoints.SSLPAYMENT_USERS}`, { params: data });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const acceptOrDeclineUser = async (username, accept) => {
   return await privateAxios.post(`/accounts/pending-users/${username}/`, {
     accept: accept,

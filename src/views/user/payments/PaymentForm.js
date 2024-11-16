@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useState,useContext } from 'react';
 import { AuthContext } from 'src/context/AuthContext';
-
+import endpoints from 'src/constants/endpoints';
 const PaymentForm = () => {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
   const location = useLocation();
@@ -13,7 +13,10 @@ const PaymentForm = () => {
 
   // Extract the amount from the passed state
   const { amount,membershipId  } = location.state || { amount: 0 };  // Default to 0 if not provided
-  // console.log(membershipId);
+  const user_id = userData.id;
+  const baseURL = process.env.REACT_APP_BASE_URL_LIVE+'/';
+  // console.log(`${baseURL+endpoints.SSLPAYMENT_SUCCESS}`);
+  // console.log(baseURL);  
   const email_address = userData && userData.email_address ? userData.email_address : '';
   const name = userData && `${userData.first_name || ''} ${userData.last_name || ''}`;
   const address = userData && userData.hometown ? userData.hometown : '';
@@ -43,14 +46,19 @@ const PaymentForm = () => {
     const paymentData = {
       ...data,
       tran_id: tran_id,
-      success_url: 'http://localhost:8000/payments/success/',
-      fail_url: 'http://localhost:8000/payments/fail/',
-      cancel_url: 'http://localhost:8000/payments/cancel/',
-      ipn_url: 'http://localhost:8000/payments/ipn/',
+      success_url: `${baseURL+endpoints.SSLPAYMENT_SUCCESS}`,
+      // success_url: 'http://localhost:8000/payments/success/',
+      fail_url: `${baseURL+endpoints.SSLPAYMENT_FAIL}`,
+      // fail_url: 'http://localhost:8000/payments/fail/',
+      cancel_url: `${baseURL+endpoints.SSLPAYMENT_CANCEL}`,
+      // cancel_url: 'http://localhost:8000/payments/cancel/',
+      // ipn_url: 'http://localhost:8000/payments/ipn/',
+      ipn_url: `${baseURL+endpoints.SSLPAYMENT_IPN}`,
     };
     try {
       const response = await axios.post(
-        'http://localhost:8000/payments/initiate/',
+        // 'http://localhost:8000/payments/initiate/',
+        `${baseURL+endpoints.SSLPAYMENT}`,
         paymentData,
         {
           headers: {
@@ -78,6 +86,11 @@ const PaymentForm = () => {
           type="hidden"
           {...register('membershipId')}
           value={membershipId || ''}
+        />
+        <input
+          type="hidden"
+          {...register('user_id')}
+          value={user_id || ''}
         />
           <div className="mb-3">
             <input

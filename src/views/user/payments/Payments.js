@@ -17,14 +17,14 @@ const Payments = () => {
 
     const handleLifetimePayment = () => {
       const userId = userData.id; 
-      const membershipId = `LM-CSEDUAA${userId}`; 
+      const membershipId = `LM000000${userId}`; 
       navigate('/payment-form', { state: { amount: 20000, membershipId } });
     };
 
     // Handle Annual Membership Payment
     const handleAnnualPayment = () => {
       const userId = userData.id; 
-      const membershipId = `AM-CSEDUAA${userId}`;
+      const membershipId = `RM-000000${userId}`;
       navigate('/payment-form', { state: { amount: annualAmount, membershipId } }); // Navigate with membershipId
     };
 
@@ -36,7 +36,7 @@ const Payments = () => {
       return;
     }
 
-    navigate('/donation-form', { state: { amount: donationAmount, donationType } }); // Redirect to donation form
+    navigate('/donation-form', { state: { amount: donationAmount, donationType } }); 
   };
 
   const handleIncreaseYears = () => {

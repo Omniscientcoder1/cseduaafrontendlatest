@@ -32,6 +32,7 @@ import Students from 'src/views/user/students/Students';
 import Loadable from '../layouts/full/shared/loadable/Loadable';
 import ReturnAndRefundPolicy from 'src/views/dashboard/components/ReturnAndRefundPolicy';
 import DonationForm from 'src/views/user/payments/DonationForm';
+import PaymentsManagement from 'src/views/admin/payments-management/PaymentsManagement';
 
 /* ***Layouts**** */
 const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
@@ -89,6 +90,15 @@ const Router = [
         element: (
           <AuthAdminGuard>
             <EventsManagement />
+          </AuthAdminGuard>
+        ),
+      },
+      {
+        path: '/payments-management',
+        exact: true,
+        element: (
+          <AuthAdminGuard>
+            <PaymentsManagement />
           </AuthAdminGuard>
         ),
       },
